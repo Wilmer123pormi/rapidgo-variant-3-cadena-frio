@@ -1,0 +1,10 @@
+
+{
+  "evento_id": "evt-0001",
+  "pedido_id": "PED-001",
+  "vehiculo_id": "VEH-001",
+  "producto_tipo": "producto_refrigerado",
+  "timestamp": "2026-10-21T10:30:00Z",
+  "temperatura_c": 4.2,
+  "humedad_pct": 65.0
+}
