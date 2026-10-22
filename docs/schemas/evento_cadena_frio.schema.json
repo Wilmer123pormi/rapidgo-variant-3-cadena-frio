@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evento de cadena de frio - RapidGo (variante 3)",
+  "type": "object",
+  "required": ["evento_id", "pedido_id", "vehiculo_id", "producto_tipo", "timestamp", "temperatura_c", "humedad_pct"],
+  "additionalProperties": false,
+  "properties": {
+    "evento_id":     { "type": "string", "minLength": 1 },
+    "pedido_id":     { "type": "string", "pattern": "^PED-[0-9]+$" },
+    "vehiculo_id":   { "type": "string", "pattern": "^VEH-[0-9]+$" },
+    "producto_tipo": { "type": "string", "enum": ["producto_refrigerado"] },
+    "timestamp":     { "type": "string", "format": "date-time" },
+    "temperatura_c": { "type": "number", "minimum": -30, "maximum": 60 },
+    "humedad_pct":   { "type": "number", "minimum": 0, "maximum": 100 }
+  }
+}
