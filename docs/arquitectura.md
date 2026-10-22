@@ -47,8 +47,26 @@ para el proyecto.
 
 ## 5. Aspectos pendientes de definición
 
-- Contrato JSON definitivo.
-- Tópico, clave y número de particiones de Kafka.
-- KPI y umbrales de alerta.
+- Contrato JSON definitivo del evento.
+- Validación de los KPI y umbrales de alerta.
 - Formato y organización de los datos almacenados.
 - Tareas específicas que coordinará Airflow.
+
+## 6. Decisiones técnicas de Kafka
+
+### 6.1. Tópico
+
+Se propone utilizar el tópico `cadena_frio_eventos` para publicar los eventos generados durante el transporte de productos sensibles a la temperatura.
+
+### 6.2. Clave del mensaje
+
+Se propone utilizar `pedido_id` como clave del mensaje para agrupar los eventos de un mismo pedido en una misma partición y facilitar el procesamiento ordenado de sus eventos.
+
+### 6.3. Número de particiones
+
+Se propone comenzar con 3 particiones para distribuir los eventos y permitir el procesamiento en paralelo. Esta configuración inicial podrá ajustarse según el volumen de datos y los recursos disponibles.
+
+### 6.4. Consumidor
+
+Spark Structured Streaming consumirá los eventos de Kafka para validarlos, procesarlos y preparar los resultados que se almacenarán en el Data Lake.
+
