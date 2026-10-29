@@ -6,7 +6,7 @@ def esta_fuera_de_rango(temperatura_c, humedad_pct):
 
 
 def es_temperatura_critica(temperatura_c):
-    return temperatura_c >= 100 or temperatura_c <= 0
+    return temperatura_c >= 10 or temperatura_c <= 0
 
 
 def test_evento_dentro_de_rango():
