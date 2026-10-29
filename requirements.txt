@@ -1,3 +1,4 @@
-
 pytest
 jsonschema[format]
+kafka-python
+pyspark==3.5.7

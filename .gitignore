@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Salidas de Spark
+datalake/raw/
+datalake/processed/
+datalake/curated/
+datalake/checkpoints/
