@@ -31,3 +31,28 @@ def test_temperatura_critica_por_frio():
 
 def test_temperatura_no_critica():
     assert not es_temperatura_critica(4.2)
+
+def hay_alerta_exposicion_prolongada(
+    duracion_minutos,
+    fuera_de_rango=True,
+):
+    return fuera_de_rango and duracion_minutos >= 10
+
+
+def test_exposicion_menor_a_10_minutos_no_genera_alerta():
+    assert not hay_alerta_exposicion_prolongada(9)
+
+
+def test_exposicion_exactamente_10_minutos_genera_alerta():
+    assert hay_alerta_exposicion_prolongada(10)
+
+
+def test_exposicion_mayor_a_10_minutos_genera_alerta():
+    assert hay_alerta_exposicion_prolongada(15)
+
+
+def test_exposicion_en_rango_no_genera_alerta():
+    assert not hay_alerta_exposicion_prolongada(
+        15,
+        fuera_de_rango=False,
+    )
