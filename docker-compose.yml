@@ -16,7 +16,10 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   spark-master:
@@ -34,3 +37,26 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
     depends_on:
       - spark-master
+
+  # Job de Spark Structured Streaming (Kafka -> Data Lake en Parquet).
+  # Se ejecuta con: docker compose up spark-job
+  spark-job:
+    image: apache/spark:3.5.7-python3
+    depends_on:
+      - kafka
+    user: root
+    working_dir: /app
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC: eventos-cadena-frio
+      DATALAKE_PATH: /app/datalake
+      MUESTREO_SEGUNDOS: "2"
+    volumes:
+      - ./spark:/app/spark
+      - ./datalake:/app/datalake
+    command: >
+      /opt/spark/bin/spark-submit
+      --master local[2]
+      --conf spark.jars.ivy=/tmp/.ivy2
+      --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.7
+      /app/spark/streaming_job.py
